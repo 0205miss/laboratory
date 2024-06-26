@@ -1,6 +1,7 @@
 module.exports = {
   extends: ["@stellar/eslint-config", "plugin:import/typescript"],
   rules: {
+    "import/order":"off",
     "no-console": "off",
     "import/no-unresolved": "off",
     "react/jsx-filename-extension": ["error", { extensions: [".tsx", ".jsx"] }],

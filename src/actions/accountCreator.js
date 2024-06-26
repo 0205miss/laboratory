@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Keypair, Account, MuxedAccount } from "@stellar/stellar-sdk";
 import dispatchInNewStack from "../helpers/dispatchInNewStack";
+import * as bip39 from 'bip39';
+import { derivePath } from "ed25519-hd-key";
 
 export const GENERATE_NEW_KEYPAIR = "GENERATE_NEW_KEYPAIR";
 export function generateNewKeypair() {
@@ -90,6 +92,34 @@ export const UPDATE_GENERATE_MUXED_ACCOUNT_INPUT =
 export function updateGenerateMuxedAccountInput(input) {
   return {
     type: UPDATE_GENERATE_MUXED_ACCOUNT_INPUT,
+    input,
+  };
+}
+
+export const TRANSFER_MNEMONIC = "TRANSFER_MNEMONIC";
+export function transfermnemonic(mnemonic) {
+  try {
+    const seed = bip39.mnemonicToSeedSync(mnemonic);
+    const key = derivePath("m/44'/314159'/0'",seed);
+    const keypair = Keypair.fromRawEd25519Seed(key.key);
+    return {
+      type: TRANSFER_MNEMONIC,
+      publicAddress: keypair.publicKey(),
+      secretAddress: keypair.secret(),
+    };
+  } catch (e) {
+    return {
+      type: TRANSFER_MNEMONIC,
+      errorMessage: `Something went wrong. ${e.toString()}`,
+    };
+  }
+}
+
+export const UPDATE_Mnemonic_INPUT =
+  "UPDATE_Mnemonic_INPUT";
+export function updateMnemonicInput(input) {
+  return {
+    type: UPDATE_Mnemonic_INPUT,
     input,
   };
 }

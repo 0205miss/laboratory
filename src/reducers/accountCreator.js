@@ -9,6 +9,8 @@ import {
   UPDATE_GENERATE_MUXED_ACCOUNT_INPUT,
   PARSE_MUXED_ACCOUNT,
   UPDATE_PARSE_MUXED_ACCOUNT_INPUT,
+  UPDATE_Mnemonic_INPUT,
+  TRANSFER_MNEMONIC,
 } from "../actions/accountCreator";
 
 function keypairGeneratorResult(state = null, action) {
@@ -99,7 +101,32 @@ function friendbotStatus(state = defaultRequestState, action) {
   }
   return state;
 }
-
+const initialMnemonicState = {
+  gAddress: "",
+  publicAddress: "",
+  secretAddress: "",
+  errorMessage: "",
+};
+function mnemonicGenerated(state = initialMnemonicState, action) {
+  if (action.type === TRANSFER_MNEMONIC) {
+    return {
+      ...state,
+      mAddress: action.mAddress,
+      publicAddress: action.publicAddress,
+      secretAddress: action.secretAddress,
+      errorMessage: action.errorMessage || "",
+    };
+  }
+  if (action.type === UPDATE_Mnemonic_INPUT) {
+    return {
+      ...state,
+      ...action.input,
+      errorMessage: "",
+      mAddress: "",
+    };
+  }
+  return state;
+}
 const accountCreator = combineReducers({
   keypairGeneratorResult,
   keypairGeneratorPubKey,
@@ -107,5 +134,6 @@ const accountCreator = combineReducers({
   friendbotStatus,
   muxedAccountGenerated,
   muxedAccountParsed,
+  mnemonicGenerated,
 });
 export default accountCreator;

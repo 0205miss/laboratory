@@ -1,5 +1,5 @@
 import { StrKey } from "@stellar/stellar-sdk";
-
+import * as bip39 from 'bip39';
 import TextPicker from "components/FormComponents/TextPicker.js";
 import { ImportMark } from "components/ImportMark.js";
 import { useFreighter, freighterGetPublicKey } from "helpers/useFreighter.js";
@@ -9,12 +9,14 @@ interface PubKeyPickerProps {
   placeholder?: string;
   value: string;
   onUpdate: (value: string) => void;
+  mnemonic?: boolean;
 }
 
 export default function PubKeyPicker({
   placeholder,
   value,
   onUpdate,
+  mnemonic,
   ...props
 }: PubKeyPickerProps) {
   const hasFreighter = useFreighter();
@@ -36,7 +38,9 @@ export default function PubKeyPicker({
             if (!StrKey.isValidMed25519PublicKey(value)) {
               return "Muxed account address is invalid.";
             }
-          } else if (!StrKey.isValidEd25519PublicKey(value)) {
+          } else if (mnemonic && !bip39.validateMnemonic(value)) {
+            return "Mnemonic is invalid.";
+          }else if (!mnemonic && !StrKey.isValidEd25519PublicKey(value)) {
             return "Public key is invalid.";
           }
 
