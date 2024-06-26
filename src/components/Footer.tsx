@@ -4,17 +4,9 @@ export const Footer = () => (
       <a
         rel="noreferrer"
         target="_blank"
-        href="https://www.stellar.org/terms-of-service"
+        href="https://github.com/0205miss/laboratory"
       >
-        Terms of Service
-      </a>
-      <span className="spacer" />
-      <a
-        rel="noreferrer"
-        target="_blank"
-        href="https://www.stellar.org/privacy-policy"
-      >
-        Privacy Policy
+        Open Source
       </a>
     </div>
   </div>
