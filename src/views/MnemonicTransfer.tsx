@@ -39,6 +39,7 @@ export const MnemonicTransfer = () => {
 
             <PubKeyPicker
               value={mnemonicGenerated.gAddress}
+              placeholder="Example: climb ring climb xxxx ...."
               onUpdate={(gAddress: string) => {
                 dispatch(updateMnemonicInput({ gAddress }));
               }}
