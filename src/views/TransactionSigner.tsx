@@ -1,24 +1,17 @@
 import { useDispatch } from "react-redux";
 import * as StellarSdk from "@stellar/stellar-sdk";
-import { isConnected } from "@stellar/freighter-api";
 import isUndefined from "lodash/isUndefined";
 import map from "lodash/map";
 import {
   importFromXdr,
   clearTransaction,
   setSecrets,
-  setBIPPath,
-  signWithLedger,
-  signWithTrezor,
-  signWithFreighter,
-  signWithAlbedo,
 } from "actions/transactionSigner.js";
 import TransactionImporter from "components/TransactionImporter.js";
 import { EasySelect } from "components/EasySelect";
 import OptionsTablePair from "components/OptionsTable/Pair.js";
 import SecretKeyPicker from "components/FormComponents/SecretKeyPicker.js";
 import { MultiPicker } from "components/FormComponents/MultiPicker";
-import { BipPathPicker } from "components/FormComponents/BipPathPicker";
 import HelpMark from "components/HelpMark.js";
 import { txPostLink, xdrViewer, feeBumpTxLink } from "helpers/linkBuilder.js";
 import { useRedux } from "hooks/useRedux";
@@ -43,15 +36,12 @@ export const TransactionSigner = () => {
   const networkPassphrase = network.current.networkPassphrase;
   const isSoroban = useIsSoroban();
 
-  let TransactionBuilder, FeeBumpTransaction, Networks: any;
+  let TransactionBuilder: any;
   TransactionBuilder = StellarSdk.TransactionBuilder;
-  FeeBumpTransaction = StellarSdk.FeeBumpTransaction;
-  Networks = StellarSdk.Networks;
 
   const {
     xdr,
     signers,
-    bipPath,
     hardwarewalletStatus,
     freighterwalletStatus,
     albedowalletStatus,
@@ -116,95 +106,6 @@ export const TransactionSigner = () => {
       ),
     };
 
-    if (transaction instanceof FeeBumpTransaction) {
-      infoTable = {
-        ...infoTable,
-        ...{
-          "Fee source account": (
-            <span data-testid="transaction-signer-fee-source">
-              {transaction.feeSource}
-            </span>
-          ),
-          "Transaction Fee (stroops)": (
-            <span data-testid="transaction-signer-transaction-fee">
-              {transaction.fee}
-            </span>
-          ),
-          "Number of existing signatures": (
-            <span data-testid="transaction-signer-fee-sig-length">
-              {transaction.signatures.length}
-            </span>
-          ),
-          "Inner transaction hash": (
-            <EasySelect plain={true}>
-              <pre
-                className="so-code so-code__wrap"
-                data-testid="transaction-signer-inner-hash"
-              >
-                <code>
-                  {transaction.innerTransaction.hash().toString("hex")}
-                </code>
-              </pre>
-            </EasySelect>
-          ),
-          "Inner transaction source account": (
-            <span data-testid="transaction-signer-inner-source">
-              {transaction.innerTransaction.source}
-            </span>
-          ),
-          "Inner transaction sequence number": (
-            <span data-testid="transaction-signer-inner-sequence">
-              {transaction.innerTransaction.sequence}
-            </span>
-          ),
-          "Inner transaction fee (stroops)": (
-            <span data-testid="transaction-signer-inner-fee">
-              {transaction.innerTransaction.fee}
-            </span>
-          ),
-          "Inner transaction number of operations": (
-            <span data-testid="transaction-signer-inner-op-length">
-              {transaction.innerTransaction.operations.length}
-            </span>
-          ),
-          "Inner transaction number of existing signatures": (
-            <span data-testid="transaction-signer-inner-sig-length">
-              {transaction.innerTransaction.signatures.length}
-            </span>
-          ),
-        },
-      };
-    } else {
-      infoTable = {
-        ...infoTable,
-        ...{
-          "Source account": (
-            <span data-testid="transaction-signer-source">
-              {transaction.source}
-            </span>
-          ),
-          "Sequence number": (
-            <span data-testid="transaction-signer-sequence">
-              {transaction.sequence}
-            </span>
-          ),
-          "Transaction Fee (stroops)": (
-            <span data-testid="transaction-signer-fee">{transaction.fee}</span>
-          ),
-          "Number of operations": (
-            <span data-testid="transaction-signer-op-length">
-              {transaction.operations.length}
-            </span>
-          ),
-          "Number of existing signatures": (
-            <span data-testid="transaction-signer-sig-length">
-              {transaction.signatures.length}
-            </span>
-          ),
-        },
-      };
-    }
-
     let codeResult,
       submitLink,
       xdrLink,
@@ -265,78 +166,6 @@ export const TransactionSigner = () => {
       );
     }
 
-    let hardwarewalletMessage;
-    if (hardwarewalletStatus.message) {
-      let messageAlertType;
-      if (hardwarewalletStatus.status === "loading") {
-        messageAlertType = "s-alert--info";
-      } else if (hardwarewalletStatus.status === "success") {
-        messageAlertType = "s-alert--success";
-      } else if (hardwarewalletStatus.status === "failure") {
-        messageAlertType = "s-alert--alert";
-      }
-
-      hardwarewalletMessage = (
-        <div>
-          <br />
-          <div
-            className={`s-alert TxSignerKeys__ledgerwallet_message ${messageAlertType}`}
-          >
-            {" "}
-            {hardwarewalletStatus.message}{" "}
-          </div>
-        </div>
-      );
-    }
-
-    let freighterwalletMessage;
-    if (freighterwalletStatus.message) {
-      let messageAlertType;
-      if (freighterwalletStatus.status === "loading") {
-        messageAlertType = "s-alert--info";
-      } else if (freighterwalletStatus.status === "success") {
-        messageAlertType = "s-alert--success";
-      } else if (freighterwalletStatus.status === "failure") {
-        messageAlertType = "s-alert--alert";
-      }
-
-      freighterwalletMessage = (
-        <div>
-          <br />
-          <div
-            className={`s-alert TxSignerKeys__ledgerwallet_message ${messageAlertType}`}
-          >
-            {" "}
-            {freighterwalletStatus.message}{" "}
-          </div>
-        </div>
-      );
-    }
-
-    let albedowalletMessage;
-    if (albedowalletStatus.message) {
-      let messageAlertType;
-      if (albedowalletStatus.status === "loading") {
-        messageAlertType = "s-alert--info";
-      } else if (albedowalletStatus.status === "success") {
-        messageAlertType = "s-alert--success";
-      } else if (albedowalletStatus.status === "failure") {
-        messageAlertType = "s-alert--alert";
-      }
-
-      albedowalletMessage = (
-        <div>
-          <br />
-          <div
-            className={`s-alert TxSignerKeys__ledgerwallet_message ${messageAlertType}`}
-          >
-            {" "}
-            {albedowalletStatus.message}{" "}
-          </div>
-        </div>
-      );
-    }
-
     content = (
       <div>
         <div className="so-back">
@@ -384,85 +213,6 @@ export const TransactionSigner = () => {
                     value={signers}
                     onUpdate={(value) => dispatch(setSecrets(value))}
                   />
-                </OptionsTablePair>
-                <OptionsTablePair label="BIP Path">
-                  <BipPathPicker
-                    id="strig"
-                    value={bipPath}
-                    onUpdate={(value: string) => dispatch(setBIPPath(value))}
-                  />
-                  <div className="TxSignerKeys__signBipPath">
-                    <button
-                      className="s-button"
-                      data-testid="transaction-signer-ledger-sign-button"
-                      onClick={() => {
-                        dispatch(
-                          signWithLedger(xdr, bipPath, networkPassphrase),
-                        );
-                      }}
-                    >
-                      Sign with Ledger
-                    </button>
-                    <button
-                      className="s-button"
-                      data-testid="transaction-signer-ledger-sign-button"
-                      onClick={() => {
-                        dispatch(
-                          signWithLedger(xdr, bipPath, networkPassphrase, true),
-                        );
-                      }}
-                    >
-                      Sign hash with Ledger
-                    </button>
-                    <button
-                      className="s-button"
-                      data-testid="transaction-signer-trezor-sign-button"
-                      onClick={() => {
-                        dispatch(
-                          signWithTrezor(xdr, bipPath, networkPassphrase),
-                        );
-                      }}
-                    >
-                      Sign with Trezor
-                    </button>
-                  </div>
-                  <p className="optionsTable__pair__content__note">
-                    NOTE: Trezor devices require upper time bounds to be set
-                    (non-zero), otherwise the signature will not be verified.
-                  </p>
-                  {hardwarewalletMessage}
-                </OptionsTablePair>
-                {isConnected() && (
-                  <OptionsTablePair label="Freighter">
-                    <button
-                      className="s-button"
-                      data-testid="transaction-signer-freighter-sign-button"
-                      onClick={() => {
-                        dispatch(signWithFreighter(xdr, { networkPassphrase }));
-                      }}
-                    >
-                      Sign with Freighter
-                    </button>
-                    {freighterwalletMessage}
-                  </OptionsTablePair>
-                )}
-                <OptionsTablePair label="Albedo">
-                  <button
-                    className="s-button"
-                    onClick={() => {
-                      dispatch(
-                        signWithAlbedo(
-                          xdr,
-                          networkPassphrase === Networks.TESTNET
-                            ? "TESTNET"
-                            : "PUBLIC",
-                        ),
-                      );
-                    }}
-                  >
-                    Sign with Albedo
-                  </button>
-                  {albedowalletMessage}
                 </OptionsTablePair>
               </div>
             </div>

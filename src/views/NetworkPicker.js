@@ -101,12 +101,6 @@ class NetworkPicker extends React.Component {
         ) : null}
         <form className="s-buttonGroup NetworkPicker__buttonGroup">
           {items}
-          <NetworkToggle
-            name="custom"
-            key="custom"
-            selected={current.name === "custom"}
-            onToggle={() => dispatch(setModalVisibility(true))}
-          />
         </form>
         <span className="NetworkPicker__url">{current.horizonURL}</span>
       </div>

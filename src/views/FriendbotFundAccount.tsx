@@ -13,8 +13,8 @@ export const FriendbotFundAccount = () => {
   const { accountCreator, network } = useRedux("accountCreator", "network");
   const { friendbotStatus, friendbotTarget } = accountCreator;
   const baseURL = network.current.horizonURL;
-  const IS_TESTNET = baseURL === NETWORK.available.test.horizonURL;
-  const IS_FUTURENET = baseURL === NETWORK.available.futurenet.horizonURL;
+  const IS_TESTNET2 = baseURL === NETWORK.available.TestNet2.horizonURL;
+  const IS_TESTNET = baseURL === NETWORK.available.TestNet.horizonURL;
 
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ export const FriendbotFundAccount = () => {
     return null;
   };
 
-  if (IS_TESTNET || IS_FUTURENET) {
+  if (IS_TESTNET || IS_TESTNET2) {
     return (
       <div
         className="so-back AccountCreator__section"
@@ -67,12 +67,12 @@ export const FriendbotFundAccount = () => {
       >
         <div className="so-chunk">
           <h3>
-            Friendbot: Fund a {IS_FUTURENET ? "futurenet" : "test"} network
+            Friendbot: Fund a {IS_TESTNET ? "TESTNET" : "TESTNET2"} network
             account
           </h3>
           <p>
             The friendbot is a horizon API endpoint that will fund an account
-            with 10,000 lumens on the {IS_FUTURENET ? "futurenet " : "test"}{" "}
+            with 10,000 lumens on the {IS_TESTNET ? "TESTNET " : "TESTNET2"}{" "}
             network.
           </p>
 
@@ -89,7 +89,7 @@ export const FriendbotFundAccount = () => {
             className="s-button"
             disabled={friendbotTarget.length === 0}
             onClick={() =>
-              dispatch(startFriendbotRequest(friendbotTarget, IS_FUTURENET))
+              dispatch(startFriendbotRequest(friendbotTarget, IS_TESTNET))
             }
           >
             Get test network lumens

@@ -4,9 +4,9 @@ export const Introduction = () => {
       <div className="so-back">
         <div className="so-chunk">
           <div className="Introduction__container">
-            <h2>Stellar Laboratory</h2>
+            <h2>Pi Laboratory</h2>
             <p className="Introduction__lead">
-              The Stellar Laboratory is a set of tools that enables people to
+              The Pi Laboratory is a set of tools that enables people to
               try out and learn about the Stellar network. The laboratory can{" "}
               <a href="#txbuilder">build transactions</a>,{" "}
               <a href="#txsigner">sign them</a>, and{" "}
@@ -25,6 +25,11 @@ export const Introduction = () => {
               <a href="https://developers.stellar.org/">
                 Stellar developers site
               </a>
+              .
+            </p>
+            <p>
+              Mention{" : "}
+              This is a fork from Stellar Laboratory
               .
             </p>
           </div>

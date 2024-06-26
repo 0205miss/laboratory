@@ -10,8 +10,8 @@ export const KeypairGenerator = () => {
   const { accountCreator, network } = useRedux("accountCreator", "network");
   const { keypairGeneratorResult, keypairGeneratorPubKey } = accountCreator;
   const baseURL = network.current.horizonURL;
-  const IS_TESTNET = baseURL === NETWORK.available.test.horizonURL;
-  const IS_FUTURENET = baseURL === NETWORK.available.futurenet.horizonURL;
+  const IS_TESTNET2 = baseURL === NETWORK.available.TestNet2.horizonURL;
+  const IS_TESTNET = baseURL === NETWORK.available.TestNet.horizonURL;
 
   const dispatch = useDispatch();
 
@@ -40,7 +40,7 @@ export const KeypairGenerator = () => {
   };
 
   const renderKeypairGeneratorLink = () => {
-    if ((IS_TESTNET || IS_FUTURENET) && keypairGeneratorPubKey !== "") {
+    if ((IS_TESTNET || IS_TESTNET2) && keypairGeneratorPubKey !== "") {
       return (
         <a
           onClick={() =>

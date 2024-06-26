@@ -1,20 +1,19 @@
-import { Networks } from "@stellar/stellar-sdk";
 
 const NETWORK = {
   available: {
-    futurenet: {
-      horizonURL: "https://horizon-futurenet.stellar.org",
-      networkPassphrase: Networks.FUTURENET,
+    TestNet: {
+      horizonURL: "https://api.testnet.minepi.com",
+      networkPassphrase: "Pi Testnet",
     },
-    test: {
-      horizonURL: "https://horizon-testnet.stellar.org",
-      networkPassphrase: Networks.TESTNET,
+    TestNet2: {
+      horizonURL: "https://api.testnet2.minepi.com",
+      networkPassphrase: "Pi Testnet 5-2024",
     },
-    public: {
-      horizonURL: "https://horizon.stellar.org",
-      networkPassphrase: Networks.PUBLIC,
+    MainNet: {
+      horizonURL: "https://api.mainnet.minepi.com",
+      networkPassphrase: "Pi Network",
     },
   },
-  defaultName: "test",
+  defaultName: "TestNet",
 };
 export default NETWORK;

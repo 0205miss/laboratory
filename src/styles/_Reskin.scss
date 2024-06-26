@@ -39,8 +39,10 @@ code, kbd, pre, samp {
   align-items: center;
 }
 .so-logo__main {
+  text-transform: uppercase !important;
   margin: -12px 0 -7px;
   line-height: 0;
+  color: #6400CC !important;
 }
 .so-logo__separator {
   height: 1em;
