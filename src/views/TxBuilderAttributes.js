@@ -124,9 +124,9 @@ function TxBuilderAttributes(props) {
                 <a href="https://developers.stellar.org/docs/glossary#base-fee">
                   network base fee
                 </a>{" "}
-                is currently set to {networkBaseFee} stroops (
-                {networkBaseFee / 1e7} lumens). Based on current network
-                activity, we suggest setting it to {networkMinFee} stroops.
+                is currently set to {networkBaseFee} micro PI (
+                {networkBaseFee / 1e7} Pi). Based on current network
+                activity, we suggest setting it to {networkMinFee} micro PI.
                 Final transaction fee is equal to base fee times number of
                 operations in this transaction.
               </p>
@@ -246,9 +246,9 @@ function TxBuilderAttributes(props) {
                 <a href="https://developers.stellar.org/docs/glossary#base-fee">
                   network base fee
                 </a>{" "}
-                is currently set to {networkBaseFee} stroops (
-                {networkBaseFee / 1e7} lumens). Based on current network
-                activity, we suggest setting it to {networkMinFee} stroops.
+                is currently set to {networkBaseFee} micro PI (
+                {networkBaseFee / 1e7} Pi). Based on current network
+                activity, we suggest setting it to {networkMinFee} micro PI.
                 Final transaction fee is equal to base fee times number of
                 operations in this transaction.
               </p>
